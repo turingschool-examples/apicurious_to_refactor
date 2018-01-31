@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Apicurious</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if current_user %>
+      You are logged in as <%= link_to current_user.user_name, user_path(current_user) %> - <%= link_to "Logout", logout_path, method: :delete %>
+    <% else %>
+      <%= link_to "Login with GitHub", github_login_path %>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>

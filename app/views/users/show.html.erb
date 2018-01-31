@@ -1,0 +1,46 @@
+<p><%= image_tag @user_info["avatar_url"] %></p>
+
+<h1><strong>Name: </strong><%= @user_info["name"] %></h1>
+
+<h4><strong>Nickname: </strong><%= @user_info["login"] %></h4>
+
+<p><strong>Bio: </strong><%= @user_info["bio"] %></p>
+
+<p><strong>Number of Starred Repos: </strong><%= @starred_repo_count %></p>
+
+<p>
+  <strong>Followers: </strong>
+  <% @followers.each_with_index do |follower, index| %>
+    <%= ", " if index != 0 %>
+    <%= link_to follower["login"], follower["html_url"] %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Following: </strong>
+  <% @followees.each_with_index do |followee, index| %>
+    <%= ", " if index != 0 %>
+    <%= link_to followee["login"], followee["html_url"] %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Repos: </strong>
+  <% @repos.each_with_index do |repo, index| %>
+    <%= ", " if index != 0 %>
+    <%= link_to repo["name"], repo["html_url"] %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Recent Activity: </strong>
+  <ul>
+    <% @events.take(10).each_with_index do |event, index| %>
+    <li>
+      <strong>Event Type: </strong><%= event[:type] %><br />
+      <strong>Repo: </strong><%= link_to event[:repo]["name"], event[:repo]["url"].sub("api.","").sub("/repos","") %><br />
+      <strong>Time: </strong><%= @events.first[:created_at] %>
+    </li>
+    <% end %>
+</ul>
+</p>
