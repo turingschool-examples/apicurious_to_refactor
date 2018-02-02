@@ -1,39 +1,45 @@
 class GithubService
-  def self.conn(token)
+  attr_reader :user
+
+  def initialize(user)
+    @user = user
+  end
+
+  def conn(token)
     Faraday.new(url: "https://api.github.com") do |faraday|
       faraday.adapter  Faraday.default_adapter
       faraday.params["access_token"] = token
     end
   end
 
-  def self.get_user_info(user)
+  def get_user_info(user)
     response = conn(user.oauth_token).get "/user"
-    JSON.parse(response.body)
+    parse_json(response)
   end
 
-  def self.get_starred_repos(user)
+  def get_starred_repos(user)
     response = conn(user.oauth_token).get "/users/#{user.user_name}/starred"
-    JSON.parse(response.body)
+    parse_json(response)
   end
 
-  def self.get_followers(user)
+  def get_followers(user)
     response = conn(user.oauth_token).get "/users/#{user.user_name}/followers"
-    JSON.parse(response.body)
+    parse_json(response)
   end
 
-  def self.get_following(user)
+  def get_following(user)
     response = conn(user.oauth_token).get "/users/#{user.user_name}/following"
-    JSON.parse(response.body)
+    parse_json(response)
   end
 
-  def self.get_repos(user)
+  def get_repos(user)
     response = conn(user.oauth_token).get "/user/repos"
-    JSON.parse(response.body)
+    parse_json(response)
   end
 
-  def self.get_events(user)
+  def get_events(user)
     response = conn(user.oauth_token).get "/users/#{user.user_name}/events"
-    raw_events = JSON.parse(response.body)
+    raw_events = parse_json(response)
     raw_events.map do |raw_event|
       {
         type: raw_event["type"].gsub(/[a-z][A-Z]/) do |match|
@@ -45,3 +51,9 @@ class GithubService
     end
   end
 end
+
+private
+
+  def parse_json(response)
+    JSON.parse(response.body)
+  end
