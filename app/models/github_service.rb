@@ -12,32 +12,32 @@ class GithubService
     end
   end
 
-  def get_user_info(user)
+  def get_user_info
     response = conn(user.oauth_token).get "/user"
     parse_json(response)
   end
 
-  def get_starred_repos(user)
+  def get_starred_repos
     response = conn(user.oauth_token).get "/users/#{user.user_name}/starred"
     parse_json(response)
   end
 
-  def get_followers(user)
+  def get_followers
     response = conn(user.oauth_token).get "/users/#{user.user_name}/followers"
     parse_json(response)
   end
 
-  def get_following(user)
+  def get_following
     response = conn(user.oauth_token).get "/users/#{user.user_name}/following"
     parse_json(response)
   end
 
-  def get_repos(user)
+  def get_repos
     response = conn(user.oauth_token).get "/user/repos"
     parse_json(response)
   end
 
-  def get_events(user)
+  def get_events
     response = conn(user.oauth_token).get "/users/#{user.user_name}/events"
     raw_events = parse_json(response)
     raw_events.map do |raw_event|
