@@ -13,33 +13,33 @@ class GithubService
   end
 
   def get_user_info
-    response = conn(user.oauth_token).get "/user"
-    parse_json(response)
+    @info = conn(user.oauth_token).get "/user"
+    parse_json(@info)
   end
 
   def get_starred_repos
-    response = conn(user.oauth_token).get "/users/#{user.user_name}/starred"
-    parse_json(response)
+    @repos = conn(user.oauth_token).get "/users/#{user.user_name}/starred"
+    parse_json(@repos)
   end
 
   def get_followers
-    response = conn(user.oauth_token).get "/users/#{user.user_name}/followers"
-    parse_json(response)
+    @followers = conn(user.oauth_token).get "/users/#{user.user_name}/followers"
+    parse_json(@followers)
   end
 
   def get_following
-    response = conn(user.oauth_token).get "/users/#{user.user_name}/following"
-    parse_json(response)
+    @following = conn(user.oauth_token).get "/users/#{user.user_name}/following"
+    parse_json(@following)
   end
 
   def get_repos
-    response = conn(user.oauth_token).get "/user/repos"
-    parse_json(response)
+    @user_repos = conn(user.oauth_token).get "/user/repos"
+    parse_json(@user_repos)
   end
 
   def get_events
-    response = conn(user.oauth_token).get "/users/#{user.user_name}/events"
-    raw_events = parse_json(response)
+    @events = conn(user.oauth_token).get "/users/#{user.user_name}/events"
+    raw_events = parse_json(@events)
     raw_events.map do |raw_event|
       {
         type: raw_event["type"].gsub(/[a-z][A-Z]/) do |match|
